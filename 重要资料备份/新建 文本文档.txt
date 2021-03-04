@@ -1,0 +1,51 @@
+uses
+XMLDoc, XMLIntf
+
+
+procedure TForm1.BitBtn1Click(Sender: TObject);
+var
+  Root, ChildNode, Node : IXMLNode;
+  index, j : integer;
+begin
+ try
+  if OpenDialog1.Execute then
+    begin
+      XMLDoc1.LoadFromFile(OpenDialog1.FileName);
+      Root := XMLDoc1.ChildNodes.Nodes[1];
+      Showmessage(IntToStr(Root.ChildNodes.Count));
+      for Index := 0 to Root.ChildNodes.Count - 1 do
+        begin
+          Node := Root.ChildNodes.Nodes[Index];
+          ChildNode := Node.ChildNodes.First;
+          for J := 0 to Node.ChildNodes.Count - 1 do
+            begin
+              ListBox1.Items.Add(Node.ChildNodes[j].NodeName + ': ' + Node.ChildNodes[j].Attributes['val'] );
+            end;
+          ListBox1.Items.Add('----------------');
+        end;
+      Root := XMLDoc1.DocumentElement;
+      Showmessage('导入完成！');
+    end;
+ except
+  Showmessage('不支持此XML格式');
+ end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  XMLDoc1 := TXMLDocument.Create(Self);
+end;
+
+
+
+
+
+
+
+
+BULK INSERT ZXZTBS.dbo.[T_YSSR]
+   FROM 'C:\111.txt'
+   WITH 
+      (
+         FIELDTERMINATOR = ','
+      )

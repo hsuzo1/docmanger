@@ -1,0 +1,64 @@
+查找所有单位信息，编码
+Select distinct v_UnitName,v_UnitShortName,i_UnitOrder,Unt_Base.n_UnitID,Unt_CategoriesAndUnit.i_Level,Unt_CategoriesAndUnit.v_UnitCode,v_ParentCode,Tsk_Data_Status.b_HaveData,i_CheckFlagBefore,i_CheckFlagAfter,b_AuditBefore,i_RoundFlag,b_AuditAfter,b_SummaryBefore FROM Unt_Base INNER JOIN Unt_CategoriesAndUnit ON Unt_CategoriesAndUnit.n_UnitID=Unt_Base.n_UnitID INNER JOIN Tsk_Base ON Tsk_Base.v_UnitCateCode=Unt_CategoriesAndUnit.v_UnitCateCode LEFT OUTER JOIN Tsk_Data_Status ON Tsk_Base.v_TaskCode=Tsk_Data_Status.v_TaskCode AND Unt_CategoriesAndUnit.v_UnitCode=Tsk_Data_Status.v_UnitCode AND Tsk_Data_Status.i_Level=2 AND v_PeriodID='200907M' WHERE Tsk_Base.v_TaskCode='CZSZ001FJYB' AND Unt_CategoriesAndUnit.v_UnitCode LIKE '0090259001%' order by Unt_CategoriesAndUnit.v_UnitCode
+
+
+查找临时表
+SELECT * FROM Tsk_TableFormat WHERE v_TaskCode='CZSZ001FJYB' AND v_PeriodID='200907M'      AND i_BookLevel=2 AND b_InputBook=1
+
+
+查询月报中各个工作表名
+SELECT v_BookCode,v_BookName,v_BookAlias,i_BookType,i_SheetOrder,t_DataCell,t_FlexRows,t_Rotation FROM Tsk_Sheet_Info WHERE  v_TaskCode='CZSZ001FJYB' AND v_PeriodID='200907M'		AND i_BookLevel=2		AND b_InputBook=1 ORDER BY i_SheetOrder
+
+
+查本级收支月报
+ SELECT Ind_nDataCZSZ001FJYB_002_2_2009.*  FROM Ind_nDataCZSZ001FJYB_002_2_2009 WHERE   v_UnitCode='00902590011' and v_PeriodID='200907M'  ORDER BY i_Row,i_RowFlex
+
+查兴宁区报表
+ SELECT Ind_nDataCZSZ001FJYB_002_2_2009.*  FROM Ind_nDataCZSZ001FJYB_002_2_2009 WHERE   v_UnitCode='00902590019001' and v_PeriodID='200907M'  ORDER BY i_Row,i_RowFlex
+
+查市级表
+ SELECT * FROM Ind_nDataCZSZ001FJYB_003_2_2009 WHERE  v_UnitCode='00902590019002' and v_PeriodID='200907M'  ORDER BY i_Row,i_RowFlex
+
+查样表
+SELECT * FROM Tsk_TableFormat WHERE v_TaskCode='CZSZ001FJYB' AND v_PeriodID='200907M'      AND i_BookLevel=2 AND b_InputBook=1
+
+查询出已有报表的期间
+SELECT pd.v_PeriodID,v_PeriodName=(CASE WHEN i_PeriodType=-1 THEN '模板样表'  WHEN i_PeriodType=-2 THEN pd.v_PeriodID+'年度模板' ELSE( v_PeriodName +'('+(CASE RIGHT(PD.v_PeriodID,1) WHEN 'N' THEN '年报' WHEN 'Q' THEN '季报' WHEN 'M' THEN '月报' WHEN 'X' THEN '旬报' WHEN 'W' THEN '周报' ELSE '日报' END)+')')END) FROM	Tsk_Period pd,Tsk_Sheet_Info p WHERE	pd.v_PeriodID=p.v_PeriodID 		AND p.v_TaskCode='CZSZ001FJYB'	AND i_PeriodType<>-1 AND (LEN(pd.v_PeriodID)> 4)	 AND i_SheetOrder=1 AND pd.v_PeriodID<>'-1' AND pd.v_PeriodID<>'' AND p.i_BookLevel=2  AND b_InputBook=1	ORDER BY pd.v_PeriodID
+
+
+select * from T_Code_Code where KMDM like '103040[1-3]%' OR KMDM like '1030405%' OR KMDM like '1030408%' OR KMDM like '1030449%' OR KMDM like '1030450%'
+
+
+
+ SELECT Ind_nDataCZSZ001FJYB_002_2_2009.*  FROM Ind_nDataCZSZ001FJYB_002_2_2009 WHERE   v_UnitCode='00902590011' and v_PeriodID='200906M'  ORDER BY i_Row,i_RowFlex
+
+数据轉取
+SELECT AA.v_UnitCode,AA.v_UnitName,AA.v_ParentCode,AA.i_Level,AA.C6 AS sCol FROM 
+(SELECT A.v_UnitCode,B.v_UnitName,A.v_ParentCode,A.i_Level,D.C6 FROM Unt_CategoriesAndUnit A INNER 
+JOIN 
+Unt_Base B ON A.n_UnitID=B.n_UnitID AND A.v_ParentCode LIKE '0090259001%' AND B.b_SeparateUnit=1 INNER 
+JOIN 
+Tsk_Base C ON A.v_UnitCateCode = C.v_UnitCateCode AND C.v_TaskCode='CZSZ001FJYB' 
+LEFT JOIN 
+Ind_nDataCZSZ001FJYB_002_2_2009 D ON A.v_UnitCode=D.v_UnitCode AND D.v_PeriodID='200906M' AND D.i_Row=1418 AND D.i_RowFlex=1 
+AND D.i_FlexLevel=1 ) 
+AA 
+ORDER BY AA.v_UnitCode
+
+
+
+
+
+
+
+
+
+=====记录查询时间
+declare @t1 datetime ,@t2 datetime
+set @t1=Getdate()
+select sKMMC, T_All, sbj, T_CQ, T_KFQ,T_XJ from Table_YB Where Len(sKMDM) < 6 And sPeriod='200901M'
+--select skmmc,sbj,  xn_4 , Xn_3 , QX_4 , QX_3 , XXT_4 , XXT_3 , JN_4 , JN_3 , YN_4 , YN_3 , LQ_4 , LQ_3 , XSH , FJQ , GX , JK , HQ from Table_YB Where Len(sKMDM) < 6 And sPeriod='200907M'
+--Select Sum(QX_4) From Table_YB Where sPeriod='200907M' And sRow in (1557,1558,1559,1560)
+--exec U_getzxxtyb '200901M'
+set @t2=Getdate()
+select DATEDIFF(ms,@t1, @t2)

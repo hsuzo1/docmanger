@@ -1,0 +1,74 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{462decec-7c0c-463c-ad50-e40270e7de41}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="xcfile.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Filehost.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="sysmange.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="dm.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <BorlandProject>
+                <Default.Personality/>
+            </BorlandProject>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="xcfile">
+        <MSBuild Projects="xcfile.dproj"/>
+    </Target>
+    <Target Name="xcfile:Clean">
+        <MSBuild Projects="xcfile.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="xcfile:Make">
+        <MSBuild Projects="xcfile.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Filehost">
+        <MSBuild Projects="Filehost.dproj"/>
+    </Target>
+    <Target Name="Filehost:Clean">
+        <MSBuild Projects="Filehost.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Filehost:Make">
+        <MSBuild Projects="Filehost.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="sysmange">
+        <MSBuild Projects="sysmange.dproj"/>
+    </Target>
+    <Target Name="sysmange:Clean">
+        <MSBuild Projects="sysmange.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="sysmange:Make">
+        <MSBuild Projects="sysmange.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dm">
+        <MSBuild Projects="dm.dproj"/>
+    </Target>
+    <Target Name="dm:Clean">
+        <MSBuild Projects="dm.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dm:Make">
+        <MSBuild Projects="dm.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="xcfile;Filehost;sysmange;dm"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="xcfile:Clean;Filehost:Clean;sysmange:Clean;dm:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="xcfile:Make;Filehost:Make;sysmange:Make;dm:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

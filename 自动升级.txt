@@ -1,0 +1,40 @@
+
+{$R *.DFM}
+{$R WindowsXP.res}
+
+uses auUtils;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  AutoUpgraderPro1.CheckUpdate(False);
+end;
+
+procedure TForm1.AutoUpgraderPro1Aborted(Sender: TObject);
+begin
+  // upgrade aborted
+  Caption := 'Upgrade aborted';
+  ProgressBar1.Position := 0;
+end;
+
+procedure TForm1.URLLabel1Click(Sender: TObject);
+begin
+  OpenURL(URLLabel1.Caption, True);
+end;
+
+procedure TForm1.URLLabel2Click(Sender: TObject);
+begin
+  OpenURL(URLLabel2.Caption, True);
+end;
+
+procedure TForm1.AutoUpgraderPro1NoUpdateAvailable(Sender: TObject);
+begin
+  Caption := 'No Update';
+end;
+
+procedure TForm1.AutoUpgraderPro1Progress(Sender: TObject;
+  const FileURL: string; FileSize, BytesRead, ElapsedTime,
+  EstimatedTimeLeft: Integer; PercentsDone, TotalPercentsDone: Byte;
+  TransferRate: Single);
+begin
+  ProgressBar1.Position := PercentsDone;
+end;
